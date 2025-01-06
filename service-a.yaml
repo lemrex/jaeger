@@ -29,6 +29,8 @@ spec:
             limits:
               memory: "64Mi"    # Limit memory usage to 512Mi
               cpu: "100m"        # Limit CPU usage to 500 milliCPU
+      imagePullSecrets:
+        - name: default-secret               
 ---
 apiVersion: v1
 kind: Service
