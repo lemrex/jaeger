@@ -1,4 +1,3 @@
-// index.js
 const express = require('express');
 const axios = require('axios');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
@@ -10,15 +9,16 @@ const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-proto'
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
-
-
 const app = express();
 const port = 3001;
+
+// Get OTEL_EXPORTER_OTLP_ENDPOINT from environment variables (with a fallback)
+const otlpEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://localhost:4318/v1/traces";
 
 // Configure exporters
 const consoleExporter = new ConsoleSpanExporter();
 const otlpExporter = new OTLPTraceExporter({
-  url: 'http://localhost:4318/v1/traces',
+  url: otlpEndpoint,  // Use the environment variable for the endpoint
 });
 
 // Configure the tracer provider with resource and span attributes
@@ -42,8 +42,7 @@ registerInstrumentations({
   ],
 });
 
-console.log('OpenTelemetry is monitoring your application with service name "my-service-name"...');
-
+console.log('OpenTelemetry is monitoring your application with service name "service-1"...');
 
 app.get('/', (req, res) => {
   const tracer = provider.getTracer('example-tracer');

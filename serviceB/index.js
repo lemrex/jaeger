@@ -12,10 +12,13 @@ const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventi
 const app = express();
 const port = 3002;
 
+// Get OTEL_EXPORTER_OTLP_ENDPOINT from environment variables (with a fallback)
+const otlpEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://localhost:4318/v1/traces";
+
 // Configure exporters
 const consoleExporter = new ConsoleSpanExporter();
 const otlpExporter = new OTLPTraceExporter({
-  url: 'http://localhost:4318/v1/traces',
+  url: otlpEndpoint,  // Use the environment variable for the endpoint
 });
 
 // Configure the tracer provider with resource and span attributes
@@ -39,7 +42,7 @@ registerInstrumentations({
   ],
 });
 
-console.log('OpenTelemetry is monitoring your application with service name "my-service-name"...');
+console.log('OpenTelemetry is monitoring your application with service name "service-2"...');
 
 // Sample routes
 app.get('/', (req, res) => {
@@ -59,18 +62,4 @@ app.get('/user/:id', (req, res) => {
 // Start the server
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
-});
-
-
-
-
-app.get('/', (req, res) => {
-  const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /');
-  res.send('Service 2 is running');
-  span.end();
-});
-
-app.listen(port, () => {
-  console.log(`Service 2 listening at http://localhost:${port}`);
 });
