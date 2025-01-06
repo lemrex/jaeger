@@ -45,4 +45,5 @@ spec:
     - protocol: TCP
       port: 3001
       targetPort: 3001
-  type: ClusterIP
+      nodePort: 31001    # NodePort (choose an available port in the range 30000-32767)
+  type: NodePort  
