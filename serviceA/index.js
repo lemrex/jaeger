@@ -55,7 +55,7 @@ app.get('/service-2', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
   const span = tracer.startSpan('GET /service-2');
   try {
-    const response = await axios.get('http://service-1.default.svc.cluster.local:3002/');
+    const response = await axios.get('http://service-2.default.svc.cluster.local:3002/');
     res.send(`Service 2 responded: ${response.data}`);
   } catch (error) {
     res.status(500).send('Error communicating with Service 2');
