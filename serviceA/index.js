@@ -63,6 +63,68 @@ app.get('/service-2', async (req, res) => {
   span.end();
 });
 
+app.get('/service-3', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-2');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/');
+    res.send(`Service 3 responded: ${response.data}`);
+  } catch (error) {
+    res.status(500).send('Error communicating with Service 3');
+  }
+  span.end();
+});
+
+app.get('/service-3/status', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-2');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3002/status');
+    res.send(`Service 3 responded: ${response.data}`);
+  } catch (error) {
+    res.status(500).send('Error communicating with Service 3');
+  }
+  span.end();
+});
+
+app.get('/service-3/items', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-2');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/items');
+    res.send(`Service 3 responded: ${response.data}`);
+  } catch (error) {
+    res.status(500).send('Error communicating with Service 3');
+  }
+  span.end();
+});
+
+app.get('/service-3/users', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-2');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/users');
+    res.send(`Service 3 responded: ${response.data}`);
+  } catch (error) {
+    res.status(500).send('Error communicating with Service 3');
+  }
+  span.end();
+});
+
+app.get('/service-3', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-2');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3002/orders');
+    res.send(`Service 3 responded: ${response.data}`);
+  } catch (error) {
+    res.status(500).send('Error communicating with Service 3');
+  }
+  span.end();
+});
+
+
+
 app.listen(port, () => {
   console.log(`Service 1 listening at http://localhost:${port}`);
 });
