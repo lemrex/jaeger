@@ -94,6 +94,20 @@ app.get('/orders', (req, res) => {
   span.end();
 });
 
+
+app.get('/stat', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /stat');
+  try {
+    const response = await axios.get('http://service-2.default.svc.cluster.local:3002/stat');
+    res.json({ message: 'Service 2 responded', data: response.data });
+  } catch (error) {
+    res.status(500).json({ error: 'Error communicating with Service 2', details: error.message });
+  }
+  span.end();
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

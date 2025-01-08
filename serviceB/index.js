@@ -59,6 +59,19 @@ app.get('/user/:id', (req, res) => {
   span.end();
 });
 
+
+app.get('/stat', (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /orders');
+  const orders = [
+    { id: 1, user: 'alpha', total: 1500 },
+    { id: 2, user: 'beta', total: 2500 },
+  ];
+  res.json(orders);
+  span.end();
+});
+
+
 // Start the server
 app.listen(3002, () => {
   console.log('Server is running on http://localhost:3002');

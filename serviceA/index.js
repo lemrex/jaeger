@@ -122,6 +122,18 @@ app.get('/service-3/orders', async (req, res) => {
   span.end();
 });
 
+app.get('/service-3/stat', async (req, res) => {
+  const tracer = provider.getTracer('example-tracer');
+  const span = tracer.startSpan('GET /service-3/orders');
+  try {
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/orders');
+    res.json({ message: 'Service 3 orders', data: response.data });
+  } catch (error) {
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
+  }
+  span.end();
+});
+
 app.listen(port, () => {
   console.log(`Service 1 listening at http://localhost:${port}`);
 });
