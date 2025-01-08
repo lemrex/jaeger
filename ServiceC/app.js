@@ -50,16 +50,14 @@ console.log('OpenTelemetry is monitoring your application with service name "ser
 app.get('/', (req, res) => {
   const tracer = provider.getTracer('example-tracer');
   const span = tracer.startSpan('GET /');
-  res.send('Service 3 is running!');
+  res.json({ message: 'Service 3 is running!' });
   span.end();
 });
-
-
 
 app.get('/status', (req, res) => {
   const tracer = provider.getTracer('example-tracer');
   const span = tracer.startSpan('GET /status');
-  res.send({ status: 'Service is up and running', uptime: process.uptime() });
+  res.json({ status: 'Service is up and running', uptime: process.uptime() });
   span.end();
 });
 
@@ -70,11 +68,9 @@ app.get('/items', (req, res) => {
     { id: 1, name: 'Item 1', price: 100 },
     { id: 2, name: 'Item 2', price: 200 },
   ];
-  res.send(items);
+  res.json(items);
   span.end();
 });
-
-
 
 app.get('/users', (req, res) => {
   const tracer = provider.getTracer('example-tracer');
@@ -83,7 +79,7 @@ app.get('/users', (req, res) => {
     { id: 1, name: 'User 1', email: 'user1@example.com' },
     { id: 2, name: 'User 2', email: 'user2@example.com' },
   ];
-  res.send(users);
+  res.json(users);
   span.end();
 });
 
@@ -94,10 +90,9 @@ app.get('/orders', (req, res) => {
     { id: 1, user: 'User 1', total: 150 },
     { id: 2, user: 'User 2', total: 250 },
   ];
-  res.send(orders);
+  res.json(orders);
   span.end();
 });
-
 
 // Start the server
 app.listen(port, () => {
