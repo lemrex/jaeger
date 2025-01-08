@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3003
 
 # Command to start the applications
-CMD ["node", "index.js"]
+CMD ["node", "app.js"]
