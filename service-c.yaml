@@ -18,7 +18,7 @@ spec:
         - name: service-3
           image: swr.af-south-1.myhuaweicloud.com/ralf/service-c:image-tag  # Replace with the actual image name and tag
           ports:
-            - containerPort: 3002
+            - containerPort: 3003
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: "http://jaeger-collector.observability.svc.cluster.local:4318/v1/traces"  # Adjust if using a centralized tracing server
@@ -43,7 +43,7 @@ spec:
     app: service-3
   ports:
     - protocol: TCP
-      port: 3002
-      targetPort: 3002
+      port: 3003
+      targetPort: 3003
       nodePort: 33003    # NodePort (choose an available port in the range 30000-32767)
   type: NodePort  
