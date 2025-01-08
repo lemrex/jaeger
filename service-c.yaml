@@ -45,5 +45,5 @@ spec:
     - protocol: TCP
       port: 3003
       targetPort: 3003
-      nodePort: 33003    # NodePort (choose an available port in the range 30000-32767)
+      nodePort: 31003    # NodePort (choose an available port in the range 30000-32767)
   type: NodePort  
