@@ -27,7 +27,7 @@ const otlpExporter = new OTLPTraceExporter({
 // Configure the tracer provider with resource and span attributes
 const provider = new NodeTracerProvider({
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'service-2', // Set your service name here
+    [SemanticResourceAttributes.SERVICE_NAME]: 'service-3', // Set your service name heres
     [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0', // Optionally set a version
   }),
 });
