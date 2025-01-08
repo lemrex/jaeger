@@ -27,11 +27,10 @@ const provider = new NodeTracerProvider({
     [SemanticResourceAttributes.SERVICE_NAME]: 'service-1', // Set your service name here
     [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',        // Optionally set a version
   }),
-  spanProcessors: [
-    new SimpleSpanProcessor(consoleExporter),
-    new SimpleSpanProcessor(otlpExporter),
-  ],
 });
+
+provider.addSpanProcessor(new SimpleSpanProcessor(consoleExporter));
+provider.addSpanProcessor(new SimpleSpanProcessor(otlpExporter));
 provider.register();
 
 // Register automatic instrumentation
@@ -47,7 +46,7 @@ console.log('OpenTelemetry is monitoring your application with service name "ser
 app.get('/', (req, res) => {
   const tracer = provider.getTracer('example-tracer');
   const span = tracer.startSpan('GET /');
-  res.send('Service 1 is running');
+  res.json({ message: 'Service 1 is running' });
   span.end();
 });
 
@@ -56,74 +55,72 @@ app.get('/service-2', async (req, res) => {
   const span = tracer.startSpan('GET /service-2');
   try {
     const response = await axios.get('http://service-2.default.svc.cluster.local:3002/');
-    res.send(`Service 2 responded: ${response.data}`);
+    res.json({ message: 'Service 2 responded', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 2');
+    res.status(500).json({ error: 'Error communicating with Service 2', details: error.message });
   }
   span.end();
 });
 
 app.get('/service-3', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-2');
+  const span = tracer.startSpan('GET /service-3');
   try {
     const response = await axios.get('http://service-3.default.svc.cluster.local:3003/');
-    res.send(`Service 3 responded: ${response.data}`);
+    res.json({ message: 'Service 3 responded', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 3');
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
   }
   span.end();
 });
 
 app.get('/service-3/status', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-2');
+  const span = tracer.startSpan('GET /service-3/status');
   try {
-    const response = await axios.get('http://service-3.default.svc.cluster.local:3002/status');
-    res.send(`Service 3 responded: ${response.data}`);
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/status');
+    res.json({ message: 'Service 3 status', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 3');
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
   }
   span.end();
 });
 
 app.get('/service-3/items', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-2');
+  const span = tracer.startSpan('GET /service-3/items');
   try {
     const response = await axios.get('http://service-3.default.svc.cluster.local:3003/items');
-    res.send(`Service 3 responded: ${response.data}`);
+    res.json({ message: 'Service 3 items', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 3');
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
   }
   span.end();
 });
 
 app.get('/service-3/users', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-2');
+  const span = tracer.startSpan('GET /service-3/users');
   try {
     const response = await axios.get('http://service-3.default.svc.cluster.local:3003/users');
-    res.send(`Service 3 responded: ${response.data}`);
+    res.json({ message: 'Service 3 users', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 3');
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
   }
   span.end();
 });
 
-app.get('/service-3', async (req, res) => {
+app.get('/service-3/orders', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-2');
+  const span = tracer.startSpan('GET /service-3/orders');
   try {
-    const response = await axios.get('http://service-3.default.svc.cluster.local:3002/orders');
-    res.send(`Service 3 responded: ${response.data}`);
+    const response = await axios.get('http://service-3.default.svc.cluster.local:3003/orders');
+    res.json({ message: 'Service 3 orders', data: response.data });
   } catch (error) {
-    res.status(500).send('Error communicating with Service 3');
+    res.status(500).json({ error: 'Error communicating with Service 3', details: error.message });
   }
   span.end();
 });
-
-
 
 app.listen(port, () => {
   console.log(`Service 1 listening at http://localhost:${port}`);
