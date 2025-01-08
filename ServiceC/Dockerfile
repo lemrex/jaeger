@@ -16,5 +16,5 @@ COPY . .
 # Expose the application port
 EXPOSE 3003
 
-# Command to start the application
+# Command to start the applications
 CMD ["node", "index.js"]
