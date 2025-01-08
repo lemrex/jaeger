@@ -62,7 +62,7 @@ app.get('/user/:id', (req, res) => {
 
 app.get('/stat', (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /orders');
+  const span = tracer.startSpan('GET /stat');
   const orders = [
     { id: 1, user: 'alpha', total: 1500 },
     { id: 2, user: 'beta', total: 2500 },
