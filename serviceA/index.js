@@ -124,7 +124,7 @@ app.get('/service-3/orders', async (req, res) => {
 
 app.get('/service-3/stat', async (req, res) => {
   const tracer = provider.getTracer('example-tracer');
-  const span = tracer.startSpan('GET /service-3/orders');
+  const span = tracer.startSpan('GET /service-3/stat');
   try {
     const response = await axios.get('http://service-3.default.svc.cluster.local:3003/stat');
     res.json({ message: 'Service 3 orders', data: response.data });
