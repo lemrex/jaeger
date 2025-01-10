@@ -61,52 +61,52 @@ metadata:
   annotations:
     cce.io/dew-resource: "[\"camp-auth-k8s-secret\"]"
 
----
-apiVersion: secrets-store.csi.x-k8s.io/v1
-kind: SecretProviderClass
-metadata:
-  name: dev-secrets-pclass
-spec:
-  provider: cce
-  parameters:
-    objects: |
-      - objectName: "camp-auth-k8s-secret"
-        objectType: "csms"
-        objectVersion: "latest"
-        jmesPath:
-          - path: grpcServerUrl
-            objectAlias: grpcServerUrl
-          - path: grpcServerPort
-            objectAlias: grpcServerPort
-          - path: datasource.url
-            objectAlias: datasource.url
-          - path: datasource.username
-            objectAlias: datasource.username
-          - path: datasource.password
-            objectAlias: datasource.password
-          - path: kafka.bootstrap-servers
-            objectAlias: kafka.bootstrap-servers
-          - path: redis.url
-            objectAlias: redis.url
-          - path: terminal-secret
-            objectAlias: terminal-secret
-  secretObjects:
-    - secretName: auth-secret  # name of the secret, spc will auto create this in your CCE
-      type: Opaque
-      data:
-        - objectName: grpcServerUrl
-          key: grpcServerUrl
-        - objectName: grpcServerPort
-          key: grpcServerPort
-        - objectName: datasource.url
-          key: datasource.url
-        - objectName: datasource.username
-          key: datasource.username
-        - objectName: datasource.password
-          key: datasource.password
-        - objectName: kafka.bootstrap-servers
-          key: kafka.bootstrap-servers
-        - objectName: redis.url
-          key: redis.url
-        - objectName: terminal-secret
-          key: terminal-secret
+# ---
+# apiVersion: secrets-store.csi.x-k8s.io/v1
+# kind: SecretProviderClass
+# metadata:
+#   name: dev-secrets-pclass
+# spec:
+#   provider: cce
+#   parameters:
+#     objects: |
+#       - objectName: "camp-auth-k8s-secret"
+#         objectType: "csms"
+#         objectVersion: "latest"
+#         jmesPath:
+#           - path: grpcServerUrl
+#             objectAlias: grpcServerUrl
+#           - path: grpcServerPort
+#             objectAlias: grpcServerPort
+#           - path: datasource.url
+#             objectAlias: datasource.url
+#           - path: datasource.username
+#             objectAlias: datasource.username
+#           - path: datasource.password
+#             objectAlias: datasource.password
+#           - path: kafka.bootstrap-servers
+#             objectAlias: kafka.bootstrap-servers
+#           - path: redis.url
+#             objectAlias: redis.url
+#           - path: terminal-secret
+#             objectAlias: terminal-secret
+#   secretObjects:
+#     - secretName: auth-secret  # name of the secret, spc will auto create this in your CCE
+#       type: Opaque
+#       data:
+#         - objectName: grpcServerUrl
+#           key: grpcServerUrl
+#         - objectName: grpcServerPort
+#           key: grpcServerPort
+#         - objectName: datasource.url
+#           key: datasource.url
+#         - objectName: datasource.username
+#           key: datasource.username
+#         - objectName: datasource.password
+#           key: datasource.password
+#         - objectName: kafka.bootstrap-servers
+#           key: kafka.bootstrap-servers
+#         - objectName: redis.url
+#           key: redis.url
+#         - objectName: terminal-secret
+#           key: terminal-secret
