@@ -26,32 +26,32 @@ spec:
             limits:
               memory: "64Mi"  # Limit memory usage to 512Mi
               cpu: "100m" 
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
-          envFrom:
-            - secretRef:
-                name: auth-secret       # Limit CPU usage to 500 milliCPU
+          # volumeMounts:
+          #   - name: secrets-store-inline
+          #     mountPath: "/mnt/secrets-store"
+          #     readOnly: true
+          # envFrom:
+          #   - secretRef:
+          #       name: auth-secret       # Limit CPU usage to 500 milliCPU
       imagePullSecrets:
         - name: default-secret
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: camp-auth
-#   labels:
-#     app: camp-auth
-# spec:
-#   selector:
-#     app: camp-auth
-#   ports:
-#     - protocol: TCP
-#       port: 50051
-#       targetPort: 50051
-#       nodePort: 31003  # NodePort (choose an available port in the range 30000-32767)
-#   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: camp-auth
+  labels:
+    app: camp-auth
+spec:
+  selector:
+    app: camp-auth
+  ports:
+    - protocol: TCP
+      port: 50051
+      targetPort: 50051
+      nodePort: 31003  # NodePort (choose an available port in the range 30000-32767)
+  type: NodePort
 
 # ---
 # apiVersion: v1
