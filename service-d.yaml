@@ -18,13 +18,13 @@ spec:
         - name: camp-auth
           image: swr.af-south-1.myhuaweicloud.com/camp/service-c:image-tag  # Replace with the actual image name and tag
           ports:
-            - containerPort: 50051 
+            - containerPort: 50051
           resources:
             requests:
-              memory: "64Mi"    # Request 256Mi of memory
-              cpu: "100m"        # Request 250 milliCPU
+              memory: "64Mi"  # Request 256Mi of memory
+              cpu: "100m"      # Request 250 milliCPU
             limits:
-              memory: "64Mi"    # Limit memory usage to 512Mi
+              memory: "64Mi"  # Limit memory usage to 512Mi
               cpu: "100m" 
           volumeMounts:
             - name: secrets-store-inline
@@ -34,7 +34,8 @@ spec:
             - secretRef:
                 name: auth-secret       # Limit CPU usage to 500 milliCPU
       imagePullSecrets:
-        - name: default-secret 
+        - name: default-secret
+
 ---
 apiVersion: v1
 kind: Service
@@ -49,26 +50,25 @@ spec:
     - protocol: TCP
       port: 50051
       targetPort: 50051
-      nodePort: 31003    # NodePort (choose an available port in the range 30000-32767)
-  type: NodePort  
+      nodePort: 31003  # NodePort (choose an available port in the range 30000-32767)
+  type: NodePort
 
 ---
-
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: service-account-name  
+  name: service-account-name
   annotations:
-    cce.io/dew-resource: "[\"camp-auth-k8s-secret\"]" 
+    cce.io/dew-resource: "[\"camp-auth-k8s-secret\"]"
+
 ---
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
-  name: dev-secrets-pclass 
+  name: dev-secrets-pclass
 spec:
   provider: cce
-  parameters: 
-    # Reference a secret in CSMS.
+  parameters:
     objects: |
       - objectName: "camp-auth-k8s-secret"
         objectType: "csms"
@@ -88,22 +88,22 @@ spec:
             objectAlias: kafka.bootstrap-servers
           - path: redis.url
             objectAlias: redis.url
-          - path:  terminal-secret
+          - path: terminal-secret
             objectAlias: terminal-secret
-  secretObjects:                
-    - secretName: auth-secret #name of the secret, spc will auto create this in your CCE
+  secretObjects:
+    - secretName: auth-secret  # name of the secret, spc will auto create this in your CCE
       type: Opaque
       data:
-        - objectName: grpcServerUrl 
-          key: grpcServerUrl  
+        - objectName: grpcServerUrl
+          key: grpcServerUrl
         - objectName: grpcServerPort
           key: grpcServerPort
         - objectName: datasource.url
           key: datasource.url
         - objectName: datasource.username
-          key: datasource.username  
-        - objectName: datasource.password 
-          key: datasource.password  
+          key: datasource.username
+        - objectName: datasource.password
+          key: datasource.password
         - objectName: kafka.bootstrap-servers
           key: kafka.bootstrap-servers
         - objectName: redis.url
